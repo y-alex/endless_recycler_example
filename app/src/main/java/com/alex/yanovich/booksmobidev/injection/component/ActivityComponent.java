@@ -1,6 +1,6 @@
 package com.alex.yanovich.booksmobidev.injection.component;
 
-import com.alex.yanovich.booksmobidev.MainActivity;
+import com.alex.yanovich.booksmobidev.ui.main.MainActivity;
 import com.alex.yanovich.booksmobidev.injection.PerActivity;
 import com.alex.yanovich.booksmobidev.injection.module.ActivityModule;
 

@@ -13,6 +13,8 @@ android {
         jackOptions {
             enabled true
         }
+
+        //compileOptions.incremental = false
     }
     buildTypes {
         release {
