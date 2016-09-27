@@ -1,0 +1,36 @@
+package com.alex.yanovich.booksmobidev.ui.main;
+
+import com.alex.yanovich.booksmobidev.data.model.Book;
+import com.alex.yanovich.booksmobidev.ui.base.BasePresenter;
+
+import java.util.ArrayList;
+import java.util.List;
+import rx.Subscription;
+
+public class MainPresenter extends BasePresenter<MainMvpView> {
+    private Subscription mSubscription;
+
+    @Override
+    public void attachView(MainMvpView mvpView) {
+        super.attachView(mvpView);
+    }
+
+    @Override
+    public void detachView() {
+        super.detachView();
+        if (mSubscription != null) mSubscription.unsubscribe();
+    }
+
+    public void loadBooks() {
+        checkViewAttached();
+        List<Book> books = new ArrayList<>();
+
+        if (books.isEmpty()) {
+            getMvpView().showBooksEmpty();
+        } else {
+            getMvpView().showBooks(books);
+        }
+    }
+
+}
+
