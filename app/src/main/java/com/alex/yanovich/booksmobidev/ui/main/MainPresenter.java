@@ -11,7 +11,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
     private Subscription mSubscription;
@@ -36,12 +40,36 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
     public void loadBooks() {
         checkViewAttached();
         List<Item> allBooks = getFakeList();
+//
+//        if (allBooks.isEmpty()) {
+//            getMvpView().showBooksEmpty();
+//        } else {
+//            getMvpView().showBooks(allBooks);
+//        }
+        mSubscription = mDataManager.getItems()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<Item>>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-        if (allBooks.isEmpty()) {
-            getMvpView().showBooksEmpty();
-        } else {
-            getMvpView().showBooks(allBooks);
-        }
+                    @Override
+                    public void onError(Throwable e) {
+                        Timber.e(e, "There was an error loading the books.");
+                        getMvpView().showError();
+                    }
+
+                    @Override
+                    public void onNext(List<Item> items) {
+                        if (items.isEmpty()) {
+                            getMvpView().showBooksEmpty();
+                        } else {
+                            getMvpView().showBooks(items);
+                        }
+                    }
+                });
+
     }
 
     public List<Item> getFakeList(){

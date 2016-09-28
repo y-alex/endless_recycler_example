@@ -45,9 +45,9 @@ public class MainActivity extends BaseActivity implements MainMvpView{
         mMainPresenter.attachView(this);
         mMainPresenter.loadBooks();
 
-       // if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-       //     startService(SyncService.getStartIntent(this));
-        //}
+        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
+            startService(SyncService.getStartIntent(this));
+        }
     }
     @Override
     protected void onDestroy() {
