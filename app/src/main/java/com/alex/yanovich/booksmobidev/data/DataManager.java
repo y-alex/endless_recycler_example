@@ -44,5 +44,5 @@ public class DataManager {
     public Observable<List<Item>> getItems() {
         return mDatabaseHelper.getItems().distinct();
     }
-    
+
 }

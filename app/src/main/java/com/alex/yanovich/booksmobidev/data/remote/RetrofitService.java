@@ -23,7 +23,7 @@ public interface RetrofitService {
     /******** Helper class that sets up a new services *******/
     class Creator {
 
-        public static RetrofitService newRibotsService() {
+        public static RetrofitService newRetrofitService() {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
                     .create();
