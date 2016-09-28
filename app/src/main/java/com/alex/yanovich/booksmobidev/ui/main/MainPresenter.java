@@ -1,6 +1,6 @@
 package com.alex.yanovich.booksmobidev.ui.main;
 
-import com.alex.yanovich.booksmobidev.data.model.Book;
+import com.alex.yanovich.booksmobidev.data.model.AllVolumes;
 import com.alex.yanovich.booksmobidev.ui.base.BasePresenter;
 
 import java.util.ArrayList;
@@ -23,12 +23,12 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void loadBooks() {
         checkViewAttached();
-        List<Book> books = new ArrayList<>();
+        List<AllVolumes> allVolumes = new ArrayList<>();
 
-        if (books.isEmpty()) {
+        if (allVolumes.isEmpty()) {
             getMvpView().showBooksEmpty();
         } else {
-            getMvpView().showBooks(books);
+            getMvpView().showBooks(allVolumes);
         }
     }
 

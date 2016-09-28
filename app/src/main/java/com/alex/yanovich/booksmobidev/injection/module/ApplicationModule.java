@@ -3,6 +3,7 @@ package com.alex.yanovich.booksmobidev.injection.module;
 import android.app.Application;
 import android.content.Context;
 
+import com.alex.yanovich.booksmobidev.data.remote.RetrofitService;
 import com.alex.yanovich.booksmobidev.injection.ApplicationContext;
 
 import javax.inject.Singleton;
@@ -32,4 +33,9 @@ public class ApplicationModule {
         return mApplication;
     }
 
+    @Provides
+    @Singleton
+    RetrofitService provideRetrofitService() {
+        return RetrofitService.Creator.newRetrofitService();
+    }
 }
