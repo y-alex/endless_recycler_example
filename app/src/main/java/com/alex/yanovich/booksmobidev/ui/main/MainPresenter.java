@@ -1,14 +1,26 @@
 package com.alex.yanovich.booksmobidev.ui.main;
 
+import com.alex.yanovich.booksmobidev.data.DataManager;
 import com.alex.yanovich.booksmobidev.data.model.AllVolumes;
+import com.alex.yanovich.booksmobidev.data.model.Item;
+import com.alex.yanovich.booksmobidev.data.model.VolumeInfo;
 import com.alex.yanovich.booksmobidev.ui.base.BasePresenter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+
 import rx.Subscription;
 
 public class MainPresenter extends BasePresenter<MainMvpView> {
     private Subscription mSubscription;
+    private final DataManager mDataManager;
+
+    @Inject
+    public MainPresenter(DataManager dataManager) {
+        mDataManager = dataManager;
+    }
 
     @Override
     public void attachView(MainMvpView mvpView) {
@@ -23,13 +35,28 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
 
     public void loadBooks() {
         checkViewAttached();
-        List<AllVolumes> allVolumes = new ArrayList<>();
+        List<Item> allBooks = getFakeList();
 
-        if (allVolumes.isEmpty()) {
+        if (allBooks.isEmpty()) {
             getMvpView().showBooksEmpty();
         } else {
-            getMvpView().showBooks(allVolumes);
+            getMvpView().showBooks(allBooks);
         }
+    }
+
+    public List<Item> getFakeList(){
+        List<Item> list = new ArrayList<>();
+
+        for (int i = 0; i <10 ; i++) {
+            Item item = new Item();
+            VolumeInfo vi = new VolumeInfo();
+            vi.setTitle("Title of the book"+i);
+            item.setVolumeInfo(vi);
+
+            list.add(item);
+        }
+
+        return list;
     }
 
 }
