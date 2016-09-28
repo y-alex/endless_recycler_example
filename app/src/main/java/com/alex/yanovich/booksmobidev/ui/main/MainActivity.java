@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.alex.yanovich.booksmobidev.R;
@@ -32,12 +35,20 @@ public class MainActivity extends BaseActivity implements MainMvpView{
     @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getActivityComponent().inject(this);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        //Setup Toolbar
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle(R.string.main_activity_toolbar_title);
+        getSupportActionBar().setIcon(R.drawable.ic_books);
 
         mRecyclerView.setAdapter(mBooksAdapter);
         //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -55,6 +66,23 @@ public class MainActivity extends BaseActivity implements MainMvpView{
         mMainPresenter.detachView();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_one:
+                showToast("Clicked menu one");
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /* -----------------Methods of MainMvpView----------------------- */
     @Override
     public void showBooks(List<Item> allItems) {
         mBooksAdapter.setItems(allItems);
