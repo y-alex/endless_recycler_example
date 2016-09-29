@@ -22,6 +22,7 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
 
     public EndlessRecyclerViewScrollListener(StaggeredGridLayoutManager layoutManager) {
         this.mLayoutManager = layoutManager;
+        //span count - its count of columns(items) in the recycle
         visibleThreshold = visibleThreshold * layoutManager.getSpanCount();
     }
 
@@ -46,15 +47,9 @@ public abstract class EndlessRecyclerViewScrollListener extends RecyclerView.OnS
         int lastVisibleItemPosition = 0;
         int totalItemCount = mLayoutManager.getItemCount();
 
-        if (mLayoutManager instanceof StaggeredGridLayoutManager) {
-            int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
-            // get maximum element within the list
-            lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
-        } else if (mLayoutManager instanceof LinearLayoutManager) {
-            lastVisibleItemPosition = ((LinearLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        } else if (mLayoutManager instanceof GridLayoutManager) {
-            lastVisibleItemPosition = ((GridLayoutManager) mLayoutManager).findLastVisibleItemPosition();
-        }
+        int[] lastVisibleItemPositions = ((StaggeredGridLayoutManager) mLayoutManager).findLastVisibleItemPositions(null);
+        // get maximum element within the list
+         lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions);
 
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state
