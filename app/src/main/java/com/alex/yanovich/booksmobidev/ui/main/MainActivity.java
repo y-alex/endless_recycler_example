@@ -24,11 +24,13 @@ import com.alex.yanovich.booksmobidev.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletionStage;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class MainActivity extends BaseActivity implements MainMvpView,SearchView.OnQueryTextListener{
 
@@ -61,7 +63,16 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
 
         mRecyclerView.setAdapter(mBooksAdapter);
         //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, 1));
+        StaggeredGridLayoutManager sgLayoutManager = new StaggeredGridLayoutManager(2, 1);
+        mRecyclerView.setLayoutManager(sgLayoutManager);
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(sgLayoutManager) {
+
+            @Override
+            public void onLoadMore(int page, int totalItemsCount) {
+                Timber.i("onLoadMore method has been triggered, End of LIST");
+            }
+        });
+
         mMainPresenter.attachView(this);
         mMainPresenter.loadBooks();
 

@@ -18,7 +18,7 @@ import rx.Observable;
 public interface RetrofitService {
     String ENDPOINT = "https://www.googleapis.com/books/v1/";
 
-    @GET("volumes?maxResults=20&startIndex=6&" +
+    @GET("volumes?maxResults=30&startIndex=0&" +
             "fields=kind,totalItems,items(volumeInfo/title,volumeInfo/infoLink,volumeInfo/imageLinks(smallThumbnail))")
     Observable<AllVolumes> getAllVolumes(@Query("q")  String request);
 
