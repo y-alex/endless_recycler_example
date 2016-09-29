@@ -34,6 +34,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "com.alex.yanovich.booksmobidev.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
+    public static final String EXTRA_INTENT_SERVICE_REQUEST = "com.alex.yanovich.booksmobidev.ui.main.MainActivity.REQUEST";
     @Inject
     MainPresenter mMainPresenter;
     @Inject BooksAdapter mBooksAdapter;
@@ -64,9 +65,6 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
         mMainPresenter.attachView(this);
         mMainPresenter.loadBooks();
 
-        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
-            startService(SyncService.getStartIntent(this));
-        }
     }
     @Override
     protected void onDestroy() {
@@ -103,6 +101,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
     @Override
     public boolean onQueryTextSubmit(String query) {
         showToast(query);
+        startServiceRequest(query);
         // Hide the keyboard and give focus to the list
        // InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
        // imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
@@ -110,6 +109,14 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
 
         mSearchView.clearFocus();
         return true;
+    }
+
+    private void startServiceRequest(String request){
+        if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
+            Intent intent = SyncService.getStartIntent(this);
+            intent.putExtra(EXTRA_INTENT_SERVICE_REQUEST, request);
+            startService(intent);
+        }
     }
 
     /* -----------------Methods of MainMvpView----------------------- */

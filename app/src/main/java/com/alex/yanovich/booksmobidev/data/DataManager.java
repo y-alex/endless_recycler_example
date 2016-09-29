@@ -27,8 +27,8 @@ public class DataManager {
         mDatabaseHelper = databaseHelper;
     }
 
-    public Observable<Item> syncItems() {
-        return mRetrofitService.getAllVolumes().map(new Func1<AllVolumes, List<Item>>() {
+    public Observable<Item> syncItems(String request) {
+        return mRetrofitService.getAllVolumes(request).map(new Func1<AllVolumes, List<Item>>() {
             @Override
             public List<Item> call(AllVolumes allVolumes) {
                 return allVolumes.getItems();

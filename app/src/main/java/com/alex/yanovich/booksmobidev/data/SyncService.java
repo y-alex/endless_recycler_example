@@ -9,6 +9,7 @@ import android.os.IBinder;
 
 import com.alex.yanovich.booksmobidev.BooksApplication;
 import com.alex.yanovich.booksmobidev.data.model.Item;
+import com.alex.yanovich.booksmobidev.ui.main.MainActivity;
 import com.alex.yanovich.booksmobidev.util.AndroidComponentUtil;
 import com.alex.yanovich.booksmobidev.util.NetworkUtil;
 
@@ -42,6 +43,8 @@ public class SyncService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, final int startId) {
         Timber.i("Starting sync...");
+        String request = intent.getStringExtra(MainActivity.EXTRA_INTENT_SERVICE_REQUEST);
+        Timber.i("REQUEST In service intent is :"+ request);
 
         if (!NetworkUtil.isNetworkConnected(this)) {
             Timber.i("Sync canceled, connection not available");
@@ -51,7 +54,7 @@ public class SyncService extends Service {
         }
 
         if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncItems()
+        mSubscription = mDataManager.syncItems(request)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Item>() {
                     @Override
