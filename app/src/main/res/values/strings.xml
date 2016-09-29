@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BooksMobiDev</string>
+    <string name="searchable">Search</string>
+    <string name="main_activity_toolbar_title">Google Books</string>
+    <string name="menu_one">menu</string>
+    <string name="menu_search">search</string>
 </resources>
