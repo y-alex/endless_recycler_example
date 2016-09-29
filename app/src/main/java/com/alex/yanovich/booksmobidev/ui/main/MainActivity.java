@@ -1,13 +1,19 @@
 package com.alex.yanovich.booksmobidev.ui.main;
 
+import android.app.SearchManager;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.alex.yanovich.booksmobidev.R;
@@ -24,7 +30,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity implements MainMvpView{
+public class MainActivity extends BaseActivity implements MainMvpView,SearchView.OnQueryTextListener{
 
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "com.alex.yanovich.booksmobidev.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
@@ -37,6 +43,8 @@ public class MainActivity extends BaseActivity implements MainMvpView{
 
     @BindView(R.id.toolbar)
     Toolbar mToolbar;
+
+    SearchView mSearchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +77,12 @@ public class MainActivity extends BaseActivity implements MainMvpView{
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        mSearchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        mSearchView.setOnQueryTextListener(this);
+
+        return true;
     }
 
     @Override
@@ -80,6 +93,23 @@ public class MainActivity extends BaseActivity implements MainMvpView{
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        showToast(query);
+        // Hide the keyboard and give focus to the list
+       // InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+       // imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
+       // mRecyclerView.requestFocus();
+
+        mSearchView.clearFocus();
+        return true;
     }
 
     /* -----------------Methods of MainMvpView----------------------- */
