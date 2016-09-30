@@ -58,7 +58,7 @@ public class SyncService extends Service {
         if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
-        mSubscription = mDataManager.syncItemsTest(request, requestCode)
+        mSubscription = mDataManager.syncItems(request, requestCode)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Item>() {
                     @Override

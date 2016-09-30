@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.alex.yanovich.booksmobidev.data.model.ImageLinks;
 import com.alex.yanovich.booksmobidev.data.model.Item;
 import com.alex.yanovich.booksmobidev.data.model.VolumeInfo;
+import com.alex.yanovich.booksmobidev.ui.main.MainActivity;
 import com.squareup.sqlbrite.BriteDatabase;
 import com.squareup.sqlbrite.SqlBrite;
 
@@ -60,20 +61,23 @@ public class DatabaseHelper {
         });
     }
 
-    public Observable<Item> setItems(final Collection<Item> newItems) {
+    public Observable<Item> setItems(final Collection<Item> newItems, final int requestCode) {
         return Observable.create(new Observable.OnSubscribe<Item>() {
             @Override
             public void call(Subscriber<? super Item> subscriber) {
                 if (subscriber.isUnsubscribed()) return;
                 BriteDatabase.Transaction transaction = mDb.newTransaction();
                 try {
-                    mDb.delete(DbContract.VolumesBooksTable.TABLE_NAME, null);
+                    //Clear database when first load
+                    if(requestCode == MainActivity.EXTRA_INTENT_SERVICE_CODE_FIRST_LOAD){
+                        mDb.delete(DbContract.VolumesBooksTable.TABLE_NAME, null);
+                    }
                     for (Item item : newItems) {
                         long result = mDb.insert(DbContract.VolumesBooksTable.TABLE_NAME,
                                 DbContract.VolumesBooksTable.toContentValues(item),
                                 SQLiteDatabase.CONFLICT_REPLACE);
                         if (result >= 0) subscriber.onNext(item);
-                        //Timber.i("Insert to database rusult:"+ result);
+                        Timber.i("Insert to database more results:"+ result);
                     }
                     transaction.markSuccessful();
                     subscriber.onCompleted();
@@ -83,49 +87,6 @@ public class DatabaseHelper {
             }
         });
     }
-
-    public Observable<Item> setItemsMore(final Collection<Item> newItems) {
-        return Observable.create(new Observable.OnSubscribe<Item>() {
-            @Override
-            public void call(Subscriber<? super Item> subscriber) {
-                if (subscriber.isUnsubscribed()) return;
-                BriteDatabase.Transaction transaction = mDb.newTransaction();
-                try {
-
-//                    List<Item> list = new ArrayList<>();
-//
-//                    for (int i = 0; i <10 ; i++) {
-//                        Item item = new Item();
-//                        ImageLinks imageLinks= new ImageLinks();
-//                        imageLinks.setSmallThumbnail("fffff");
-//
-//                        VolumeInfo vi = new VolumeInfo();
-//                        vi.setTitle("Title of the book"+i);
-//                        vi.setImageLinks(imageLinks);
-//                        vi.setInfoLink("fffff");
-//                        item.setVolumeInfo(vi);
-//
-//                        list.add(item);
-//                    }
-
-                    for (Item item : newItems) {
-                        long result = mDb.insert(DbContract.VolumesBooksTable.TABLE_NAME,
-                                DbContract.VolumesBooksTable.toContentValues(item),
-                                SQLiteDatabase.CONFLICT_REPLACE);
-                        if (result >= 0) subscriber.onNext(item);
-                        //Timber.i("Insert to database more results:"+ result);
-
-                    }
-                    transaction.markSuccessful();
-                    subscriber.onCompleted();
-                } finally {
-                    transaction.end();
-                }
-            }
-        });
-    }
-
-
 
     public Observable<List<Item>> getItems() {
         return mDb.createQuery(DbContract.VolumesBooksTable.TABLE_NAME,
