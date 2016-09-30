@@ -61,7 +61,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ItemsViewHol
            uri = SundryUtils.getUriToDrawable(mContext, R.drawable.ic_local_florist);
         }
 
-        Glide.with(mContext).load(uri).centerCrop().diskCacheStrategy(DiskCacheStrategy.SOURCE).error(R.drawable.ic_local_florist).into(holder.imageView);
+        Glide.with(mContext).load(uri).centerCrop().diskCacheStrategy(DiskCacheStrategy.RESULT).error(R.drawable.ic_local_florist).into(holder.imageView);
 
         holder.nameTextView.setText(item.getVolumeInfo().getTitle());
     }
