@@ -1,6 +1,8 @@
 package com.alex.yanovich.booksmobidev.ui.main;
 
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.drawable.GradientDrawable;
 import android.support.v4.view.MenuItemCompat;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -60,7 +62,13 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
 
         mRecyclerView.setAdapter(mBooksAdapter);
         //mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        StaggeredGridLayoutManager sgLayoutManager = new StaggeredGridLayoutManager(2, 1);
+        StaggeredGridLayoutManager sgLayoutManager;
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+            sgLayoutManager = new StaggeredGridLayoutManager(3, 1);
+        }else{
+            sgLayoutManager = new StaggeredGridLayoutManager(2, 1);
+        }
+
         mRecyclerView.setLayoutManager(sgLayoutManager);
         mRecyclerView.addOnScrollListener(new EndlessRecyclerViewScrollListener(sgLayoutManager) {
 
