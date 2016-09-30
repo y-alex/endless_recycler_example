@@ -33,4 +33,26 @@ public class AllVolumes {
         this.items = items;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AllVolumes)) return false;
+
+        AllVolumes that = (AllVolumes) o;
+
+        if (getKind() != null ? !getKind().equals(that.getKind()) : that.getKind() != null)
+            return false;
+        if (getTotalItems() != null ? !getTotalItems().equals(that.getTotalItems()) : that.getTotalItems() != null)
+            return false;
+        return getItems() != null ? getItems().equals(that.getItems()) : that.getItems() == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getKind() != null ? getKind().hashCode() : 0;
+        result = 31 * result + (getTotalItems() != null ? getTotalItems().hashCode() : 0);
+        result = 31 * result + (getItems() != null ? getItems().hashCode() : 0);
+        return result;
+    }
 }

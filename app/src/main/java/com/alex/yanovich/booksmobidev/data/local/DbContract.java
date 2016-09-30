@@ -2,6 +2,7 @@ package com.alex.yanovich.booksmobidev.data.local;
 
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.provider.BaseColumns;
 
 import com.alex.yanovich.booksmobidev.data.model.ImageLinks;
 import com.alex.yanovich.booksmobidev.data.model.Item;
@@ -9,7 +10,7 @@ import com.alex.yanovich.booksmobidev.data.model.VolumeInfo;
 
 
 public class DbContract {
-    public abstract static class VolumesBooksTable{
+    public abstract static class VolumesBooksTable implements BaseColumns{
         public static final String TABLE_NAME = "volumes_books";
 
         public static final String COLUMN_TITLE = "title";
@@ -18,7 +19,8 @@ public class DbContract {
 
         public static final String CREATE =
                 "CREATE TABLE " + TABLE_NAME + " (" +
-                        COLUMN_TITLE + " TEXT PRIMARY KEY, " +
+                        _ID + " INTEGER PRIMARY KEY, " +
+                        COLUMN_TITLE + " TEXT NOT NULL, " +
                         COLUMN_IMAGE_LINK + " TEXT NOT NULL, " +
                         COLUMN_INFO_LINK + " TEXT NOT NULL" +
                         " ); ";
