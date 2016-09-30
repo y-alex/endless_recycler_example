@@ -1,6 +1,7 @@
 package com.alex.yanovich.booksmobidev.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.net.Uri;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.alex.yanovich.booksmobidev.R;
 import com.alex.yanovich.booksmobidev.data.model.Item;
+import com.alex.yanovich.booksmobidev.injection.ActivityContext;
 import com.alex.yanovich.booksmobidev.injection.ApplicationContext;
 import com.alex.yanovich.booksmobidev.util.SundryUtils;
 import com.bumptech.glide.Glide;
@@ -33,7 +35,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ItemsViewHol
     private Context mContext;
 
     @Inject
-    public BooksAdapter(@ApplicationContext Context context) {
+    public BooksAdapter(@ActivityContext Context context) {
         mItems = new ArrayList<>();
         mContext = context;
     }
@@ -69,7 +71,7 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ItemsViewHol
         return mItems.size();
     }
 
-    class ItemsViewHolder extends RecyclerView.ViewHolder {
+    class ItemsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         @BindView(R.id.book_photo)
         ImageView imageView;
@@ -81,6 +83,15 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ItemsViewHol
         public ItemsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Intent i = new Intent(Intent.ACTION_VIEW);
+            Item item = mItems.get(getAdapterPosition());
+            i.setData(Uri.parse(item.getVolumeInfo().getInfoLink()));
+            mContext.startActivity(i);
         }
     }
 
