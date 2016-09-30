@@ -1,6 +1,6 @@
 # Example of endless recyclerview
 ###### The screenshot
-![screehshot](https://github.com/y-alex/endless_recycler_example/device_img.png)
+<img src="/device_img.png" width="400">
 
 This is a example of implementation of the endless recycler view when we load content from Google book Api.
 
