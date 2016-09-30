@@ -131,11 +131,6 @@ public class MainActivity extends BaseActivity implements MainMvpView, SearchVie
         showBooksEmpty();
         startServiceRequest(query, EXTRA_INTENT_SERVICE_CODE_FIRST_LOAD);
 
-        // Hide the keyboard and give focus to the list
-        // InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        // imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
-        // mRecyclerView.requestFocus();
-
         mSearchView.clearFocus();
         return true;
     }
