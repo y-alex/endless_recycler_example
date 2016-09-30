@@ -112,7 +112,10 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
     public boolean onQueryTextSubmit(String query) {
         showToast(query);
         mCurrentQuery = query;
+        //first we need clear our recyclerView(look showBooks() method for details)
+        showBooksEmpty();
         startServiceRequest(query, EXTRA_INTENT_SERVICE_CODE_FIRST_LOAD);
+
         // Hide the keyboard and give focus to the list
        // InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
        // imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
@@ -137,7 +140,21 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
     /* -----------------Methods of MainMvpView----------------------- */
     @Override
     public void showBooks(List<Item> allItems) {
-        mBooksAdapter.setItems(allItems);
+        //Need add only items that no in the list,
+        //this operation need to avoid in the future:
+        //                     need implement different structure with better knowledge of rxjava
+        //                    Now I working on agile not coupled structure with testable goodness
+
+        //we will start from the end of the new list, only we find first item that exist in adapter list we will break
+        List<Item> adapterList = mBooksAdapter.getAdapterList();
+        for(int i = allItems.size()-1; i>=0; i--){
+            Item itemToCheck = allItems.get(i);
+            if(!adapterList.contains(itemToCheck)){
+                adapterList.add(itemToCheck);
+            }else{
+                break;
+            }
+        }
         mBooksAdapter.notifyDataSetChanged();
     }
 

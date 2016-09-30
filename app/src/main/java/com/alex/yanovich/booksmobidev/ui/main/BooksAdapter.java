@@ -83,4 +83,8 @@ public class BooksAdapter extends RecyclerView.Adapter<BooksAdapter.ItemsViewHol
             ButterKnife.bind(this, itemView);
         }
     }
+
+    public List<Item> getAdapterList(){
+        return mItems;
+    }
 }
