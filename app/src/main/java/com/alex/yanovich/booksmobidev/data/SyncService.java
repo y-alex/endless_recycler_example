@@ -44,7 +44,9 @@ public class SyncService extends Service {
     public int onStartCommand(Intent intent, int flags, final int startId) {
         Timber.i("Starting sync...");
         String request = intent.getStringExtra(MainActivity.EXTRA_INTENT_SERVICE_REQUEST);
+        int requestCode = intent.getIntExtra(MainActivity.EXTRA_INTENT_SERVICE_REQUEST_CODE, 0);
         Timber.i("REQUEST In service intent is :"+ request);
+        Timber.i("REQUEST Code In service intent is :"+ requestCode);
 
         if (!NetworkUtil.isNetworkConnected(this)) {
             Timber.i("Sync canceled, connection not available");
@@ -53,8 +55,10 @@ public class SyncService extends Service {
             return START_NOT_STICKY;
         }
 
-        if (mSubscription != null && !mSubscription.isUnsubscribed()) mSubscription.unsubscribe();
-        mSubscription = mDataManager.syncItems(request)
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
+        }
+        mSubscription = mDataManager.syncItemsTest(request, requestCode)
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Observer<Item>() {
                     @Override

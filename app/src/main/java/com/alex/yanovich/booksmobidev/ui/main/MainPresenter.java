@@ -65,6 +65,9 @@ public class MainPresenter extends BasePresenter<MainMvpView> {
                         if (items.isEmpty()) {
                             getMvpView().showBooksEmpty();
                         } else {
+                            for (int i = 0; i <items.size(); i++) {
+                                Timber.i("Item in List title:"+i+":"+items.get(i).getVolumeInfo().getTitle());
+                            }
                             getMvpView().showBooks(items);
                         }
                     }

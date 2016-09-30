@@ -1,30 +1,23 @@
 package com.alex.yanovich.booksmobidev.ui.main;
 
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.alex.yanovich.booksmobidev.R;
 import com.alex.yanovich.booksmobidev.data.SyncService;
-import com.alex.yanovich.booksmobidev.data.model.AllVolumes;
 import com.alex.yanovich.booksmobidev.data.model.Item;
 import com.alex.yanovich.booksmobidev.ui.base.BaseActivity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletionStage;
 
 import javax.inject.Inject;
 
@@ -37,6 +30,9 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
     private static final String EXTRA_TRIGGER_SYNC_FLAG =
             "com.alex.yanovich.booksmobidev.ui.main.MainActivity.EXTRA_TRIGGER_SYNC_FLAG";
     public static final String EXTRA_INTENT_SERVICE_REQUEST = "com.alex.yanovich.booksmobidev.ui.main.MainActivity.REQUEST";
+    public static final String EXTRA_INTENT_SERVICE_REQUEST_CODE = "com.alex.yanovich.booksmobidev.ui.main.MainActivity.REQUEST_CODE";
+    public static final int EXTRA_INTENT_SERVICE_CODE_FIRST_LOAD = 0;
+    public static final int EXTRA_INTENT_SERVICE_CODE_LOAD_MORE = 1;
     @Inject
     MainPresenter mMainPresenter;
     @Inject BooksAdapter mBooksAdapter;
@@ -48,6 +44,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
     Toolbar mToolbar;
 
     SearchView mSearchView;
+    private String mCurrentQuery = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +67,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
                 Timber.i("onLoadMore method has been triggered, End of LIST");
+                startServiceRequest(mCurrentQuery, EXTRA_INTENT_SERVICE_CODE_LOAD_MORE);
             }
         });
 
@@ -99,6 +97,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
         switch (item.getItemId()){
             case R.id.menu_one:
                 showToast("Clicked menu one");
+                startServiceRequest("niel gaiman", EXTRA_INTENT_SERVICE_CODE_LOAD_MORE);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -112,7 +111,8 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
     @Override
     public boolean onQueryTextSubmit(String query) {
         showToast(query);
-        startServiceRequest(query);
+        mCurrentQuery = query;
+        startServiceRequest(query, EXTRA_INTENT_SERVICE_CODE_FIRST_LOAD);
         // Hide the keyboard and give focus to the list
        // InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
        // imm.hideSoftInputFromWindow(mSearchView.getWindowToken(), 0);
@@ -122,10 +122,14 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
         return true;
     }
 
-    private void startServiceRequest(String request){
+    /*
+    This method prepare intent and start service that will download information we want
+     */
+    private void startServiceRequest(String request, int requestCode){
         if (getIntent().getBooleanExtra(EXTRA_TRIGGER_SYNC_FLAG, true)) {
             Intent intent = SyncService.getStartIntent(this);
             intent.putExtra(EXTRA_INTENT_SERVICE_REQUEST, request);
+            intent.putExtra(EXTRA_INTENT_SERVICE_REQUEST_CODE, requestCode);
             startService(intent);
         }
     }
