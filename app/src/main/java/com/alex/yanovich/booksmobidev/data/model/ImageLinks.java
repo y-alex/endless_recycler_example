@@ -3,7 +3,7 @@ package com.alex.yanovich.booksmobidev.data.model;
 
 public class ImageLinks {
 
-    private String smallThumbnail;
+    private String smallThumbnail="";
 
     public String getSmallThumbnail() {
         return smallThumbnail;

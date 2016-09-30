@@ -2,9 +2,9 @@ package com.alex.yanovich.booksmobidev.data.model;
 
 public class VolumeInfo {
 
-    private String title;
-    private ImageLinks imageLinks;
-    private String infoLink;
+    private String title="";
+    private ImageLinks imageLinks = new ImageLinks();
+    private String infoLink="";
 
     public String getTitle() {
         return title;
