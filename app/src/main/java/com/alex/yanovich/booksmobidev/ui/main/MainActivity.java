@@ -143,7 +143,7 @@ public class MainActivity extends BaseActivity implements MainMvpView,SearchView
 
     @Override
     public void showBooksEmpty() {
-        mBooksAdapter.setItems(new ArrayList<>());
+        mBooksAdapter.setItems(new ArrayList<Item>());
         mBooksAdapter.notifyDataSetChanged();
     }
 

@@ -73,7 +73,7 @@ public class DataManager {
                 }
             });
         }else {
-            itemObservable = mDatabaseHelper.setItemsMore(new ArrayList<>());
+            itemObservable = mDatabaseHelper.setItemsMore(new ArrayList<Item>());
         }
         return itemObservable;
     }

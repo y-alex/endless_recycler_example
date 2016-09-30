@@ -13,14 +13,14 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/relativeLayout"
         android:orientation="vertical">
         <ImageView
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="180dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             android:id="@+id/book_photo"/>
         <TextView
             android:layout_width="match_parent"
